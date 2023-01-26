@@ -1,10 +1,11 @@
-import TextField from './TextField'
+import React from 'react'
+import Counter from './Counter'
 
-function App() {
+const App = () => {
   return (
     <div>
-      <h1>Vite React TS</h1>
-      <TextField text="hello" person={{ firstName: 'John', lastName: 'Doe' }} />
+      <h1>TypeScript Sandbox</h1>
+      <Counter />
     </div>
   )
 }
