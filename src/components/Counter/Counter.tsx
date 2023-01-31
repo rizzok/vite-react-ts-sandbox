@@ -1,7 +1,15 @@
+import styled from '@emotion/styled'
 import React, { useState } from 'react'
 import Button from '../Button/Button'
 
-const Counter = () => {
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+const Counter: React.FC = () => {
   const [count, setCount] = useState<number>(0)
 
   const decrement = () => {
@@ -12,14 +20,20 @@ const Counter = () => {
     setCount((count) => count + 1)
   }
 
+  const StyledCountText = styled.p`
+    font-size: 1.2rem;
+    transition: color 1s;
+    color: ${count > 0 ? 'green' : count === 0 ? 'white' : 'red'};
+  `
+
   return (
-    <div>
-      Count = {count}
+    <StyledDiv>
+      <StyledCountText>Count = {count}</StyledCountText>
       <div>
         <Button handleClick={decrement}>-1</Button>
         <Button handleClick={increment}>+1</Button>
       </div>
-    </div>
+    </StyledDiv>
   )
 }
 
