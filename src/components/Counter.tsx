@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import React, { useState } from 'react'
-import Button from '../Button/Button'
+import Button from './Button'
 
 const StyledDiv = styled.div`
   display: flex;
