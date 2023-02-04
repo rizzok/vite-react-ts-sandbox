@@ -1,22 +1,23 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Root from './routes/Root'
-import ErrorPage from './components/ErrorPage'
-import Header from './components/Header'
-import Contact from './routes/Contacts'
-import { Global } from '@emotion/react'
-import { globalStyles } from './assets/styles/GlobalStyles'
+import ErrorPage from './error-page'
+import './index.css'
+import Contact, { loader as contactLoader } from './routes/contact'
+import Root, { loader as rootLoader, action as rootAction } from './routes/root'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Root />,
     errorElement: <ErrorPage />,
+    loader: rootLoader,
+    action: rootAction,
     children: [
       {
         path: 'contacts/:contactId',
         element: <Contact />,
+        loader: contactLoader,
       },
     ],
   },
@@ -24,10 +25,6 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <Global styles={globalStyles} />
-    <Header />
-    <main>
-      <RouterProvider router={router} />
-    </main>
+    <RouterProvider router={router} />
   </React.StrictMode>
 )

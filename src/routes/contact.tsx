@@ -1,35 +1,14 @@
-import { Form } from 'react-router-dom'
-
-interface Contact {
-  first: string
-  last: string
-  avatar: string
-  twitter: string
-  notes: string
-  favorite: boolean
-}
-
-interface Props {
-  contact: Contact
-}
+import { Form, useLoaderData } from 'react-router-dom'
+import { getContact } from '../contacts'
 
 export default function Contact() {
-  const contact: Contact = {
-    first: 'Your',
-    last: 'Name',
-    avatar: 'https://placekitten.com/g/200/200',
-    twitter: 'your_handle',
-    notes: 'Some notes',
-    favorite: true,
-  }
+  const contact = useLoaderData()
 
   return (
     <div id="contact">
-      {contact.avatar && (
-        <div>
-          <img key={contact.avatar} src={contact.avatar} />
-        </div>
-      )}
+      <div>
+        <img key={contact.avatar} src={contact.avatar || null} />
+      </div>
 
       <div>
         <h1>
@@ -74,7 +53,7 @@ export default function Contact() {
   )
 }
 
-function Favorite<T extends Props>({ contact }: T) {
+function Favorite({ contact }) {
   // yes, this is a `let` for later
   let favorite = contact.favorite
   return (
@@ -88,4 +67,8 @@ function Favorite<T extends Props>({ contact }: T) {
       </button>
     </Form>
   )
+}
+
+export async function loader({ params }) {
+  return getContact(params.contactId)
 }
