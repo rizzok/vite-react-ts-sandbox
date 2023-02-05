@@ -1,6 +1,17 @@
 import { Form, useLoaderData } from 'react-router-dom'
 import { getContact } from '../contacts'
 
+export interface IContact {
+  id: string
+  createdAt: number
+  first: string
+  last: string
+  twitter: string
+  avatar: string
+  notes: string
+  favorite: boolean
+}
+
 export default function Contact() {
   const contact = useLoaderData()
 
@@ -53,7 +64,7 @@ export default function Contact() {
   )
 }
 
-function Favorite({ contact }) {
+function Favorite({ contact }: { contact: IContact }) {
   // yes, this is a `let` for later
   let favorite = contact.favorite
   return (

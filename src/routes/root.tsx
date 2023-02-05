@@ -3,6 +3,7 @@ import { createContact, getContacts } from '../contacts'
 
 export default function Root() {
   const contacts = useLoaderData()
+
   return (
     <>
       <div id="sidebar">
