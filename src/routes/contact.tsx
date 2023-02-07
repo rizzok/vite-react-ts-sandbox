@@ -12,14 +12,22 @@ export interface IContact {
   favorite: boolean
 }
 
+interface LoaderParams {
+  params: {
+    contactId: string
+  }
+}
+
 export default function Contact() {
-  const contact = useLoaderData()
+  const contact = useLoaderData() as IContact
 
   return (
     <div id="contact">
-      <div>
-        <img key={contact.avatar} src={contact.avatar || null} />
-      </div>
+      {contact.avatar && (
+        <div>
+          <img key={contact.avatar} src={contact.avatar} />
+        </div>
+      )}
 
       <div>
         <h1>
@@ -80,6 +88,6 @@ function Favorite({ contact }: { contact: IContact }) {
   )
 }
 
-export async function loader({ params }) {
+export async function loader({ params }: LoaderParams) {
   return getContact(params.contactId)
 }

@@ -1,8 +1,9 @@
 import localforage from 'localforage'
 import { matchSorter } from 'match-sorter'
 import sortBy from 'sort-by'
+import { IContact } from './routes/contact'
 
-export async function getContacts(query) {
+export async function getContacts(query?: string): Promise<IContact[]> {
   await fakeNetwork(`getContacts:${query}`)
   let contacts = await localforage.getItem('contacts')
   if (!contacts) contacts = []
@@ -22,16 +23,19 @@ export async function createContact() {
   return contact
 }
 
-export async function getContact(id) {
+export async function getContact(id: string) {
   await fakeNetwork(`contact:${id}`)
-  let contacts = await localforage.getItem('contacts')
+  let contacts: IContact[] | null = await localforage.getItem('contacts')
+  if (!contacts) {
+    return null
+  }
   let contact = contacts.find((contact) => contact.id === id)
   return contact ?? null
 }
 
-export async function updateContact(id, updates) {
+export async function updateContact(id: string, updates: any) {
   await fakeNetwork()
-  let contacts = await localforage.getItem('contacts')
+  let contacts = (await localforage.getItem('contacts')) as IContact[]
   let contact = contacts.find((contact) => contact.id === id)
   if (!contact) throw new Error('No contact found for', id)
   Object.assign(contact, updates)
@@ -39,8 +43,8 @@ export async function updateContact(id, updates) {
   return contact
 }
 
-export async function deleteContact(id) {
-  let contacts = await localforage.getItem('contacts')
+export async function deleteContact(id: string) {
+  let contacts = (await localforage.getItem('contacts')) as IContact[]
   let index = contacts.findIndex((contact) => contact.id === id)
   if (index > -1) {
     contacts.splice(index, 1)
@@ -50,24 +54,24 @@ export async function deleteContact(id) {
   return false
 }
 
-function set(contacts) {
+function set(contacts: IContact[]) {
   return localforage.setItem('contacts', contacts)
 }
 
 // fake a cache so we don't slow down stuff we've already seen
-let fakeCache = {}
+let fakeCache: { [key: string]: unknown } = {}
 
-async function fakeNetwork(key) {
+function fakeNetwork(key: string): Promise<void> {
   if (!key) {
     fakeCache = {}
   }
 
   if (fakeCache[key]) {
-    return
+    return Promise.resolve()
   }
 
   fakeCache[key] = true
-  return new Promise((res) => {
-    setTimeout(res, Math.random() * 800)
+  return new Promise((resolve) => {
+    setTimeout(resolve, Math.random() * 800)
   })
 }

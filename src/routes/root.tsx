@@ -1,8 +1,9 @@
 import { Form, Link, Outlet, useLoaderData } from 'react-router-dom'
 import { createContact, getContacts } from '../contacts'
+import { IContact } from './contact'
 
 export default function Root() {
-  const contacts = useLoaderData()
+  const contacts = useLoaderData() as IContact[]
 
   return (
     <>
