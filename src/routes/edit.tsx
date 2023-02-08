@@ -1,8 +1,9 @@
 import { Form, redirect, useLoaderData } from 'react-router-dom'
 import { updateContact } from '../contacts'
+import { IContact } from './contact'
 
 export default function EditContact() {
-  const contact = useLoaderData()
+  const contact = useLoaderData() as IContact
 
   return (
     <Form method="post" id="contact-form">
@@ -54,7 +55,20 @@ export default function EditContact() {
   )
 }
 
-export async function action({ request, params }) {
+type Params = {
+  contactId: string
+}
+
+type Request = {
+  formData: () => Promise<FormData>
+}
+
+interface ActionParams {
+  params: Params
+  request: Request
+}
+
+export async function action({ params, request }: ActionParams) {
   const formData = await request.formData()
   const updates = Object.fromEntries(formData)
   await updateContact(params.contactId, updates)

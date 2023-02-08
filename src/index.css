@@ -380,3 +380,7 @@ i {
   justify-content: center;
   width: 100%;
 }
+
+button:hover {
+  cursor: pointer;
+}
